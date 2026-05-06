@@ -1,0 +1,75 @@
+# --- Agent Information Section ---
+echo -e "\e[2mfor your consideration: shodan ; gh ; docker ; brew ; cargo ; uv ; pv ; aria2c ; r2 ; analyzeHeadless ; apfel ; ollama ; claude -p ; gemini ; codex ; deepseek -p; glm51 -p  ; kimik26 -p ; minimax27 -p ; subversivequote ; d2info ; rg ; rga ;  and many others on this machine in ~/bin"
+echo -e "hack the planet\e[0m"
+echo
+
+# --- Basic Environment ---
+export BASH_SILENCE_DEPRECATION_WARNING=1
+set -o vi
+ITERM2_SQUELCH_MARK=1
+export DISABLE_TELEMETRY=true
+export GOPATH=$HOME/go
+export BUN_INSTALL="$HOME/.bun"
+export NVM_DIR="$HOME/.nvm"
+export GHIDRA_INSTALL_DIR="/opt/homebrew/Caskroom/ghidra/10.3.1-20230614/ghidra_10.3.1_PUBLIC/"
+export MMRANKHOSTS="$HOME/hacks/adventures/webhacks/majic/attack_surface.txt"
+export MMRANKCSV="$HOME/hacks/adventures/webhacks/majic/top-domains-majestic.csv"
+
+# --- Path Construction (Consolidated) ---
+# Start with a clean base path to avoid massive duplication
+PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Add specialized bins
+PATH="$HOME/go/bin:$PATH"
+PATH="$HOME/bin:$HOME/.docker/bin:$PATH"
+PATH="$HOME/.cargo/bin:$PATH"
+PATH="$HOME/.codon/bin:$PATH"
+PATH="$HOME/.local/bin:$HOME/.pdtm/go/bin/:$PATH"
+PATH="$HOME/.bun/bin:$PATH"
+PATH="$HOME/.axiom/interact:$PATH"
+PATH="$HOME/.cache/lm-studio/bin:$PATH"
+PATH="$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
+
+# Homebrew specific opt paths
+PATH="/opt/homebrew/opt/curl/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/ruby@3.0/bin:$PATH"
+
+# External tools
+PATH="$HOME/.local/share/solana/install/active_release/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:$PATH"
+
+export PATH
+
+# --- Manpath ---
+export MANPATH="/opt/homebrew/opt/mysql-client/share/man:/opt/homebrew/opt/curl/share/man:/opt/homebrew/share/man:/usr/local/share/man:/usr/share/man:/Users/kod/.local/man"
+
+# --- Aliases ---
+alias zipcat='unzip -p'
+alias msfdb='msfdb --component database'
+alias typora="open -a typora"
+alias claude='claude --dangerously-skip-permissions'
+alias aria2c='aria2c --seed-time 0'
+alias gemini='gemini --yolo --model auto'
+
+# --- Functions & Lazy Loading ---
+nvm_lazy_load() {
+    unset -f nvm node npm npx
+    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+}
+nvm() { nvm_lazy_load; nvm "$@"; }
+node() { nvm_lazy_load; node "$@"; }
+npm() { nvm_lazy_load; npm "$@"; }
+npx() { nvm_lazy_load; npx "$@"; }
+
+# --- Integrations ---
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+[ -e "${HOME}/.iterm2_shell_integration.bash" ] && source "${HOME}/.iterm2_shell_integration.bash"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# --- Visuals & Personality ---
+export PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+source "$HOME/ansi_art/sh_out/gengar.sh"
+export DOCKER_HOST=ssh://d.local
+subversivequote
+
+# --- Secrets (Last to ensure overrides) ---
+[ -f ~/.secrets ] && . ~/.secrets
