@@ -1,9 +1,73 @@
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-. "$HOME/.cargo/env"
+# --- Basic Environment ---
+export BASH_SILENCE_DEPRECATION_WARNING=1
+set -o vi
+export DISABLE_TELEMETRY=true
+export GOPATH=$HOME/go
+export BUN_INSTALL="$HOME/.bun"
+export GHIDRA_INSTALL_DIR="/opt/homebrew/Caskroom/ghidra/10.3.1-20230614/ghidra_10.3.1_PUBLIC/"
+export MMRANKHOSTS="$HOME/hacks/adventures/webhacks/majic/attack_surface.txt"
+export MMRANKCSV="$HOME/hacks/adventures/webhacks/majic/top-domains-majestic.csv"
 
-if [ -f /opt/homebrew/etc/bash_completion ]; then source /opt/homebrew/etc/bash_completion; fi
+# --- Path Construction (Consolidated) ---
+PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+PATH="$HOME/go/bin:$PATH"
+PATH="$HOME/bin:$HOME/.docker/bin:$PATH"
+PATH="$HOME/.cargo/bin:$PATH"
+PATH="$HOME/.codon/bin:$PATH"
+PATH="$HOME/.local/bin:$HOME/.pdtm/go/bin/:$PATH"
+PATH="$HOME/.bun/bin:$PATH"
+PATH="$HOME/.axiom/interact:$PATH"
+PATH="$HOME/.cache/lm-studio/bin:$PATH"
+PATH="$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
+PATH="/opt/homebrew/opt/curl/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/ruby@3.0/bin:$PATH"
+PATH="$HOME/.local/share/solana/install/active_release/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:$PATH"
+PATH="$HOME/.local/share/mise/shims:$PATH"
+PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+PATH="$PATH:$HOME/.foundry/bin"
+export PATH
+export MANPATH="/opt/homebrew/opt/mysql-client/share/man:/opt/homebrew/opt/curl/share/man:/opt/homebrew/share/man:/usr/local/share/man:/usr/share/man:/Users/kod/.local/man"
 
-export PATH="$PATH:/Users/kod/.cache/lm-studio/bin"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:/Users/kod/.pdtm/go/bin"
-export PATH="$PATH:/Users/kod/.foundry/bin"
+# --- Aliases ---
+alias zipcat='unzip -p'
+alias agy='agy --dangerously-skip-permissions'
+alias claude='claude --dangerously-skip-permissions'
+alias aria2c='aria2c --seed-time 0'
+alias gemini='gemini --yolo --model auto'
+alias codex='codex -a never'
+alias browsh='browsh --startup-url news.ycombinator.com'
+
+# --- AI shorthand aliases ---
+alias k='claudek'
+alias j='claudej'
+alias kimi='kimik26'
+alias glm='glm51'
+alias ds4='ds4cc'
+alias ds='deepseek'
+alias dsf='deepseekflash'
+alias dso='deepseekollama'
+alias dsfo='deepseekflashollama'
+alias mm='minimax27'
+alias or='claudeopenrouter'
+
+# --- Integrations ---
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# --- Interactive-only below this line ---
+[[ $- != *i* ]] && return
+
+ITERM2_SQUELCH_MARK=1
+[ -e "${HOME}/.iterm2_shell_integration.bash" ] && source "${HOME}/.iterm2_shell_integration.bash"
+
+# --- Agent Information Section ---
+echo -e "\e[2mfor your consideration: shodan ; gh ; docker ; brew ; cargo ; uv ; pv ; aria2c ; r2 ; analyzeHeadless ; apfel ; ollama ; claude -p ; gemini ; codex ; deepseek -p ; glm51 -p ; kimik26 -p ; minimax27 -p ; subversivequote ; d2info ; rg ; rga ; torrentget ; cvedb ; wiki ; jmail ; yotsuba-cli ; legba ; finale-rs ; cloudfox ; fnmap ; sliver ; csvlens ; oxker ; zellij ; dufs ; hackernews_tui ; wiki-tui ; netscanner ; btm ; localpedia ; irc ; telehack ; usenet ; mpvyt ; wiby ; bun ; deno ; mise ; and many others in ~/bin and ~/.cargo/bin"
+echo -e "hack the planet \e[0m"
+echo
+
+# --- Visuals & Personality ---
+export PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+source "$HOME/ansi_art/sh_out/gengar.sh"
+export DOCKER_HOST=ssh://d.local
+subversivequote
+
+# --- Secrets (Last to ensure overrides) ---
+[ -f ~/.secrets ] && . ~/.secrets
