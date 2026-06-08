@@ -8,7 +8,19 @@ export MMRANKHOSTS="$HOME/hacks/adventures/webhacks/majic/attack_surface.txt"
 export MMRANKCSV="$HOME/hacks/adventures/webhacks/majic/top-domains-majestic.csv"
 
 # --- Path Construction (Consolidated) ---
-PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+if [ -d /opt/homebrew ]; then
+  BREW_PREFIX=/opt/homebrew
+elif [ -d /home/linuxbrew/.linuxbrew ]; then
+  BREW_PREFIX=/home/linuxbrew/.linuxbrew
+fi
+if [ -n "$BREW_PREFIX" ]; then
+  PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+  PATH="$BREW_PREFIX/opt/curl/bin:$BREW_PREFIX/opt/mysql-client/bin:$BREW_PREFIX/opt/ruby@3.0/bin:$PATH"
+  export MANPATH="$BREW_PREFIX/opt/mysql-client/share/man:$BREW_PREFIX/opt/curl/share/man:$BREW_PREFIX/share/man:/usr/local/share/man:/usr/share/man:$HOME/.local/man"
+fi
+
 PATH="$HOME/go/bin:$PATH"
 PATH="$HOME/bin:$HOME/.docker/bin:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
@@ -18,13 +30,11 @@ PATH="$HOME/.bun/bin:$PATH"
 PATH="$HOME/.axiom/interact:$PATH"
 PATH="$HOME/.cache/lm-studio/bin:$PATH"
 PATH="$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
-PATH="/opt/homebrew/opt/curl/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/ruby@3.0/bin:$PATH"
 PATH="$HOME/.local/share/solana/install/active_release/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:$PATH"
-PATH="$HOME/.local/share/mise/shims:$PATH"
+[ -d "$HOME/.local/share/mise/shims" ] && PATH="$HOME/.local/share/mise/shims:$PATH"
 PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-PATH="$PATH:/Users/kod/.foundry/bin"
+PATH="$PATH:$HOME/.foundry/bin"
 export PATH
-export MANPATH="/opt/homebrew/opt/mysql-client/share/man:/opt/homebrew/opt/curl/share/man:/opt/homebrew/share/man:/usr/local/share/man:/usr/share/man:/Users/kod/.local/man"
 
 # --- Vi Mode (replaces .inputrc for zsh) ---
 bindkey -v
