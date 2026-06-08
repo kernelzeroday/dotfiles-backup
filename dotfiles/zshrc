@@ -114,9 +114,9 @@ echo
 # --- Visuals & Personality ---
 setopt PROMPT_SUBST
 PROMPT='${vim_mode}%F{green}%B%n@%m%b%f:%F{blue}%B%~%b%f%# '
-source "$HOME/ansi_art/sh_out/gengar.sh"
+[ -f "$HOME/ansi_art/sh_out/gengar.sh" ] && source "$HOME/ansi_art/sh_out/gengar.sh"
 export DOCKER_HOST=ssh://d.local
-subversivequote
+command -v subversivequote &>/dev/null && subversivequote
 
 # --- Secrets (Last to ensure overrides) ---
 [ -f ~/.secrets ] && . ~/.secrets

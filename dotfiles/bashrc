@@ -65,9 +65,9 @@ echo
 
 # --- Visuals & Personality ---
 export PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
-source "$HOME/ansi_art/sh_out/gengar.sh"
+[ -f "$HOME/ansi_art/sh_out/gengar.sh" ] && source "$HOME/ansi_art/sh_out/gengar.sh"
 export DOCKER_HOST=ssh://d.local
-subversivequote
+command -v subversivequote &>/dev/null && subversivequote
 
 # --- Secrets (Last to ensure overrides) ---
 [ -f ~/.secrets ] && . ~/.secrets

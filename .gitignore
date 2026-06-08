@@ -4,3 +4,4 @@
 *.old
 trace.txt
 trace2.txt
+target/
