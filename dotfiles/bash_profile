@@ -1,8 +1,3 @@
-# --- Agent Information Section ---
-echo -e "\e[2mfor your consideration: shodan ; gh ; docker ; brew ; cargo ; uv ; pv ; aria2c ; r2 ; analyzeHeadless ; apfel ; ollama ; claude -p ; gemini ; codex ; deepseek -p; glm51 -p  ; kimik26 -p ; minimax27 -p ; subversivequote ; d2info ; rg ; rga ;  and many others on this machine in ~/bin"
-echo -e "hack the planet\e[0m"
-echo
-
 # --- Basic Environment ---
 export BASH_SILENCE_DEPRECATION_WARNING=1
 set -o vi
@@ -10,7 +5,6 @@ ITERM2_SQUELCH_MARK=1
 export DISABLE_TELEMETRY=true
 export GOPATH=$HOME/go
 export BUN_INSTALL="$HOME/.bun"
-export NVM_DIR="$HOME/.nvm"
 export GHIDRA_INSTALL_DIR="/opt/homebrew/Caskroom/ghidra/10.3.1-20230614/ghidra_10.3.1_PUBLIC/"
 export MMRANKHOSTS="$HOME/hacks/adventures/webhacks/majic/attack_surface.txt"
 export MMRANKCSV="$HOME/hacks/adventures/webhacks/majic/top-domains-majestic.csv"
@@ -43,27 +37,40 @@ export MANPATH="/opt/homebrew/opt/mysql-client/share/man:/opt/homebrew/opt/curl/
 
 # --- Aliases ---
 alias zipcat='unzip -p'
-alias msfdb='msfdb --component database'
-alias typora="open -a typora"
+#alias msfdb='msfdb --component database'
+alias agy='agy --dangerously-skip-permissions'
 alias claude='claude --dangerously-skip-permissions'
 alias aria2c='aria2c --seed-time 0'
 alias gemini='gemini --yolo --model auto'
+alias codex='codex -a never'
+alias browsh='browsh --startup-url news.ycombinator.com'
 
-# --- Functions & Lazy Loading ---
-nvm_lazy_load() {
-    unset -f nvm node npm npx
-    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-}
-nvm() { nvm_lazy_load; nvm "$@"; }
-node() { nvm_lazy_load; node "$@"; }
-npm() { nvm_lazy_load; npm "$@"; }
-npx() { nvm_lazy_load; npx "$@"; }
+# --- AI shorthand aliases ---
+alias k='claudek'
+alias j='claudej'
+alias kimi='kimik26'
+alias glm='glm51'
+alias ds4='ds4cc'
+alias ds='deepseek'
+alias dsf='deepseekflash'
+alias dso='deepseekollama'
+alias dsfo='deepseekflashollama'
+alias mm='minimax27'
+alias or='claudeopenrouter'
+
+# --- Runtime Version Management (mise, shims for speed) ---
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # --- Integrations ---
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 [ -e "${HOME}/.iterm2_shell_integration.bash" ] && source "${HOME}/.iterm2_shell_integration.bash"
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# --- Agent Information Section ---
+#syshelp() { fj --help ; wiki --help ; yotsuba-cli --help ; jmail --help ; cla --help ; disroot --help ; dialup --help ; cvedb --help ; ~/bin/shodan --help ; }
+#syshelp
+echo -e "\e[2mfor your consideration: shodan ; gh ; docker ; brew ; cargo ; uv ; pv ; aria2c ; r2 ; analyzeHeadless ; apfel ; ollama ; claude -p ; gemini ; codex ; deepseek -p ; glm51 -p ; kimik26 -p ; minimax27 -p ; subversivequote ; d2info ; rg ; rga ; torrentget ; cvedb ; wiki ; jmail ; yotsuba-cli ; legba ; finale-rs ; cloudfox ; fnmap ; sliver ; csvlens ; oxker ; zellij ; dufs ; hackernews_tui ; wiki-tui ; netscanner ; btm ; localpedia ; irc ; telehack ; usenet ; mpvyt ; wiby ; bun ; deno ; mise ; and many others in ~/bin and ~/.cargo/bin"
+echo -e "hack the planet \e[0m"
+echo
 
 # --- Visuals & Personality ---
 export PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "

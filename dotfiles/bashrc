@@ -1,31 +1,9 @@
-#export PATH="$PATH:~/bin"
-#export GOPATH=$HOME/go
-#PATH=$GOPATH/bin:$PATH
-
-#PATH="/Users/kod/perl5/bin${PATH:+:${PATH}}"; export PATH;
-#PERL5LIB="/Users/kod/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-#PERL_LOCAL_LIB_ROOT="/Users/kod/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-#PERL_MB_OPT="--install_base \"/Users/kod/perl5\""; export PERL_MB_OPT;
-#PERL_MM_OPT="INSTALL_BASE=/Users/kod/perl5"; export PERL_MM_OPT;
-
-#export PATH="$PATH:/opt/metasploit-framework/bin"
-#export DOCKER_HOST=ssh://kod@a
-
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 . "$HOME/.cargo/env"
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then source $(brew --prefix)/etc/bash_completion; fi
-if [ -f $(brew --prefix)/etc/bash_completion ]; then source $(brew --prefix)/etc/bash_completion; fi
-if [ -f $(brew --prefix)/etc/bash_completion ]; then source $(brew --prefix)/etc/bash_completion; fi
-if [ -f $(brew --prefix)/etc/bash_completion ]; then source $(brew --prefix)/etc/bash_completion; fi
-if [ -f $(brew --prefix)/etc/bash_completion ]; then source $(brew --prefix)/etc/bash_completion; fi
+if [ -f /opt/homebrew/etc/bash_completion ]; then source /opt/homebrew/etc/bash_completion; fi
 
-# Added by LM Studio CLI tool (lms)
 export PATH="$PATH:/Users/kod/.cache/lm-studio/bin"
-
 export PATH="$HOME/.local/bin:$PATH"
-
-
-# Generated for pdtm. Do not edit.
-export PATH=$PATH:/Users/kod/.pdtm/go/bin
-
+export PATH="$PATH:/Users/kod/.pdtm/go/bin"
+export PATH="$PATH:/Users/kod/.foundry/bin"
