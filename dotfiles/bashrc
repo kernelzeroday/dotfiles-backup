@@ -55,6 +55,12 @@ alias or='claudeopenrouter'
 # --- Interactive-only below this line ---
 [[ $- != *i* ]] && return
 
+# --- History ---
+HISTSIZE=50000
+HISTFILESIZE=50000
+HISTCONTROL=ignoreboth:erasedups
+shopt -s histappend
+
 ITERM2_SQUELCH_MARK=1
 [ -e "${HOME}/.iterm2_shell_integration.bash" ] && source "${HOME}/.iterm2_shell_integration.bash"
 
