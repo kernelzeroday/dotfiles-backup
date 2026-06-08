@@ -34,15 +34,19 @@ export KEYTIMEOUT=1
 bindkey -M viins '^L' clear-screen
 bindkey -M vicmd '^L' clear-screen
 
-# Cursor shape changes to show mode (replaces show-mode-in-prompt)
-# Block cursor = normal mode, beam cursor = insert mode
+# Mode indicator + cursor shape (replaces show-mode-in-prompt from .inputrc)
+vim_ins_mode="%F{green}[INS]%f"
+vim_cmd_mode="%F{red}[CMD]%f"
+vim_mode=$vim_ins_mode
+
 zle-keymap-select() {
   case $KEYMAP in
-    vicmd)      print -n '\e[2 q' ;;
-    viins|main) print -n '\e[6 q' ;;
+    vicmd)      vim_mode=$vim_cmd_mode; print -n '\e[2 q' ;;
+    viins|main) vim_mode=$vim_ins_mode; print -n '\e[6 q' ;;
   esac
+  zle reset-prompt
 }
-zle-line-init() { print -n '\e[6 q'; }
+zle-line-init() { vim_mode=$vim_ins_mode; print -n '\e[6 q'; }
 zle -N zle-keymap-select
 zle -N zle-line-init
 
@@ -109,7 +113,7 @@ echo
 
 # --- Visuals & Personality ---
 setopt PROMPT_SUBST
-PROMPT='%F{green}%B%n@%m%b%f:%F{blue}%B%~%b%f%# '
+PROMPT='${vim_mode} %F{green}%B%n@%m%b%f:%F{blue}%B%~%b%f%# '
 source "$HOME/ansi_art/sh_out/gengar.sh"
 export DOCKER_HOST=ssh://d.local
 subversivequote
