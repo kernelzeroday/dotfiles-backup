@@ -14,6 +14,29 @@ Homebrew's `bash-completion@2` eagerly loads **178 completion scripts** at start
 
 If you use Homebrew bash-completion and your shell feels slow, this is probably why.
 
+## New Machine Setup
+
+```bash
+git clone https://github.com/kernelzeroday/dotfiles-backup
+cd dotfiles-backup
+./bootstrap.sh    # install homebrew, rust, go, uv, mise, all packages
+./install.sh      # symlink dotfiles, build subversivequote, link update.sh
+```
+
+`bootstrap.sh` installs everything through Homebrew where possible (rustup, go, uv, mise, deno, bun, mpv, etc.), then sets up cargo-binstall, gup, and pdtm. Package lists are data-driven — edit a text file, not a script.
+
+`install.sh` symlinks all dotfiles into `$HOME`, backs up anything that already exists as `.bak`, builds subversivequote from source, and links `scripts/update.sh` into `~/bin`.
+
+Both scripts work on macOS and Linux.
+
+## Keeping Things Updated
+
+```bash
+update.sh    # symlinked to ~/bin by install.sh
+```
+
+Detects the system package manager (brew/apt/dnf/yum/pacman/apk) and updates everything: system packages, rust toolchain + cargo bins, go bins, uv tools, mise, projectdiscovery tools, and exploit-db. Cleans package manager caches between steps to save disk on tight boxes.
+
 ## Design Decisions
 
 ### bash over zsh
@@ -32,14 +55,18 @@ Both are startup time disasters that solve problems most people don't have. bash
 
 zsh's built-in `compinit` with `-C` (cached) is fast and good enough. It loads lazily and caches the dump file, only regenerating every 24 hours.
 
-### .bashrc is the real config, .bash_profile just sources it
+### Cross-OS compatibility
 
-macOS terminals open login shells (reads `.bash_profile`). Linux terminals open non-login interactive shells (reads `.bashrc`). If your config is in `.bash_profile`, Linux gets a bare shell. The fix:
+**Shell init files:** macOS terminals open login shells (reads `.bash_profile`). Linux terminals open non-login interactive shells (reads `.bashrc`). If your config is in `.bash_profile`, Linux gets a bare shell. The fix:
 
 - `.bashrc` — everything, with `[[ $- != *i* ]] && return` to guard interactive-only stuff
 - `.bash_profile` — one line: `[ -f ~/.bashrc ] && . ~/.bashrc`
 
-This works on both OSes. Non-interactive shells (scp, rsync, cron) get PATH and env vars but skip the prompt, art, and quotes.
+Non-interactive shells (scp, rsync, cron) get PATH and env vars but skip the prompt, art, and quotes.
+
+**Homebrew detection:** PATH auto-detects Homebrew's location (`/opt/homebrew` on macOS, `/home/linuxbrew/.linuxbrew` on Linux) instead of hardcoding. Missing directories are skipped cleanly.
+
+**Guarded dependencies:** mise shims, gengar art, subversivequote, iTerm2 integration, and cargo env are all checked before loading. The shell works on a bare machine with nothing installed — no errors, no missing command noise.
 
 ### Vi mode in both shells
 
@@ -69,48 +96,47 @@ Both show green `(i)` for insert and blue `(c)` for command mode.
 
 No line numbers (they break terminal copy-paste and the cursor position is already in the status bar).
 
-### Guarded external dependencies
+### Package management philosophy
 
-`gengar.sh` (ANSI art) and `subversivequote` (random quote on login) are checked before loading:
+Instead of dumping every installed package into a Brewfile (815 formulas, most installed as dependencies), package lists are curated to what's actually used:
 
-```bash
-[ -f "$HOME/ansi_art/sh_out/gengar.sh" ] && source "$HOME/ansi_art/sh_out/gengar.sh"
-command -v subversivequote &>/dev/null && subversivequote
-```
+- `packages/brew.txt` — core tools installed via Homebrew (languages, runtimes, CLI essentials)
+- `packages/cargo.txt` — published Rust crates, installed via `cargo binstall` for speed
+- `packages/cargo-local.txt` — local Rust projects in `~/code` that aren't on crates.io (reference only, not auto-installed)
+- `packages/uv.txt` — Python CLI tools installed via `uv tool install`
 
-The shell works fine without them. No errors, no missing command noise.
+Go tools come from two sources: `gup` for standalone Go binaries and `pdtm` for ProjectDiscovery's security tools. Both are installed by bootstrap and updated by `update.sh`.
 
 ## What's Here
 
 ```
 dotfiles/
-  bash_profile    # sources .bashrc
-  bashrc          # the real config
-  inputrc         # readline vi mode
-  zshrc           # zsh equivalent of bashrc
-  zshenv          # cargo env (runs for all zsh sessions)
-  profile         # legacy sh profile
-  gitconfig       # git identity + lfs
-  gpg.conf        # gpg settings
-  vimrc           # minimal vim config
+  bash_profile        # sources .bashrc
+  bashrc              # the real config (everything lives here)
+  inputrc             # readline vi mode (green (i) / blue (c))
+  zshrc               # zsh equivalent of bashrc
+  zshenv              # cargo env (runs for all zsh sessions)
+  profile             # legacy sh profile
+  gitconfig            # git identity + lfs
+  gpg.conf            # gpg settings
+  vimrc               # minimal vim config (9 lines)
   ansi_art/
-    gengar.sh     # terminal art
+    gengar.sh          # terminal art displayed on login
   config/
     mise/
-      config.toml # node = "latest"
-subversive/       # subversivequote - random quote CLI (Rust)
-install.sh        # symlinks everything into place
+      config.toml      # node = "latest"
+packages/
+  brew.txt             # Homebrew packages
+  cargo.txt            # crates.io packages (cargo binstall)
+  cargo-local.txt      # local Rust projects (reference)
+  uv.txt               # Python CLI tools
+scripts/
+  update.sh            # cross-platform updater (symlinked to ~/bin)
+  update.osx.sh        # original macOS-only update script
+subversive/            # subversivequote — random quote CLI (Rust)
+bootstrap.sh           # new machine setup (homebrew → everything)
+install.sh             # symlink dotfiles + build subversivequote
 ```
-
-## Install
-
-```bash
-git clone https://github.com/kernelzeroday/dotfiles-backup
-cd dotfiles-backup
-./install.sh
-```
-
-Symlinks all dotfiles into `$HOME`, backs up existing files as `.bak`, builds subversivequote if Rust/cargo is available.
 
 ## What's NOT here
 
