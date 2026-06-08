@@ -34,6 +34,11 @@ mkdir -p "$HOME/.config/mise"
 link dotfiles/config/mise/config.toml .config/mise/config.toml
 
 echo ""
+echo "linking scripts to ~/bin..."
+mkdir -p "$HOME/bin"
+link scripts/update.sh bin/update.sh
+
+echo ""
 if command -v cargo &>/dev/null; then
   echo "building subversivequote..."
   cargo install --path "$DIR/subversive" --quiet

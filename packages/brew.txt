@@ -1,0 +1,45 @@
+# Core system tools
+bash
+git
+gh
+curl
+wget
+openssh
+rsync
+tmux
+htop
+btop
+ncdu
+fd
+ripgrep
+rga
+jq
+coreutils
+tree
+
+# Languages & runtimes
+go
+rustup
+uv
+mise
+deno
+bun
+
+# Networking & security
+nmap
+aria2
+tor
+proxychains-ng
+shodan
+
+# Media
+mpv
+yt-dlp
+ffmpeg
+
+# Dev tools
+docker
+docker-compose
+
+# AI / LLM
+ollama

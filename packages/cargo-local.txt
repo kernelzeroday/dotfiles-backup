@@ -1,0 +1,22 @@
+# Local Rust projects — install via: cargo install --path ~/code/<name>
+# These are not on crates.io
+
+anonkeyst
+tubecast
+hf-cli
+metacritic
+subversive
+cla
+disroot
+fj
+irc
+localpedia
+rutracker
+torrentget
+wiki
+yotsuba
+ollama-models
+d2info-rs
+booru
+legba
+jailbreaker

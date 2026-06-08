@@ -2,6 +2,8 @@
 # Bootstrap a fresh machine — run this before install.sh
 set -e
 
+DIR="$(cd "$(dirname "$0")" && pwd)"
+
 echo "=== bootstrap ==="
 
 # --- Homebrew ---
@@ -17,25 +19,10 @@ else
   echo "homebrew: $(brew --version | head -1)"
 fi
 
-# --- Core brew packages ---
+# --- Brew packages from list ---
 echo ""
 echo "installing brew packages..."
-brew install \
-  bash \
-  git \
-  gh \
-  go \
-  rustup \
-  uv \
-  mise \
-  deno \
-  bun \
-  coreutils \
-  ripgrep \
-  fd \
-  jq \
-  aria2 \
-  rga
+grep -v '^#' "$DIR/packages/brew.txt" | grep -v '^$' | xargs brew install
 
 # --- Rust toolchain ---
 echo ""
@@ -47,38 +34,44 @@ else
   echo "rust: $(rustc --version)"
 fi
 
-# --- Cargo package managers ---
+# --- Cargo package managers + published crates ---
 echo ""
 echo "installing cargo tools..."
 cargo install cargo-binstall
 cargo binstall -y cargo-update
+echo "installing cargo packages from list..."
+grep -v '^#' "$DIR/packages/cargo.txt" | grep -v '^$' | xargs cargo binstall -y
 
-# --- Go updater ---
+# --- uv tools from list ---
+echo ""
+echo "installing uv tools..."
+grep -v '^#' "$DIR/packages/uv.txt" | grep -v '^$' | while read -r pkg; do
+  uv tool install "$pkg" 2>/dev/null || echo "  warning: $pkg failed"
+done
+
+# --- Go tools ---
 echo ""
 echo "installing go tools..."
 go install github.com/nao1215/gup@latest
-
-# --- pdtm (ProjectDiscovery tool manager) ---
-if ! command -v pdtm &>/dev/null; then
-  echo ""
-  echo "installing pdtm..."
-  go install -v github.com/projectdiscovery/pdtm/cmd/pdtm@latest
-else
-  echo "pdtm: already installed"
-fi
+go install -v github.com/projectdiscovery/pdtm/cmd/pdtm@latest
 
 # --- mise globals ---
 echo ""
 echo "setting up mise..."
 mise use --global node@latest
 
-# --- Run install.sh ---
+# --- Cleanup ---
+echo ""
+echo "cleaning up..."
+brew cleanup -s
+
 echo ""
 echo "=== bootstrap done ==="
 echo ""
 echo "next steps:"
-echo "  ./install.sh              # symlink dotfiles"
-echo "  cargo binstall <tool>     # install rust CLI tools"
-echo "  uv tool install <tool>    # install python CLI tools"
-echo "  pdtm -ia                  # install projectdiscovery tools"
-echo "  brew bundle               # (if you add a Brewfile later)"
+echo "  ./install.sh                    # symlink dotfiles + build subversivequote"
+echo "  pdtm -ia                        # install projectdiscovery tools"
+echo ""
+echo "local rust projects (if you have ~/code cloned):"
+echo "  cat packages/cargo-local.txt    # list of local-only rust projects"
+echo "  cargo install --path ~/code/X   # install one"

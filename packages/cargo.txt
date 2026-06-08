@@ -1,0 +1,20 @@
+# Install via: cargo binstall $(grep -v '^#' packages/cargo.txt | tr '\n' ' ')
+
+# Terminal UI
+csvlens
+oxker
+zellij
+btm
+netscanner
+hackernews_tui
+wiki-tui
+tiny
+
+# Utilities
+dufs
+simple-http-server
+notox
+ore
+
+# Roku
+roku

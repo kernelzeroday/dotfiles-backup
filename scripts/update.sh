@@ -1,22 +1,29 @@
 #!/bin/bash
 # Update everything — works on macOS and Linux
-set -e
 
 echo "=== system packages ==="
 if command -v brew &>/dev/null; then
   brew upgrade
+  brew cleanup -s
+  echo "  cache cleaned"
   brew upgrade --casks -g 2>/dev/null || true
+  brew cleanup -s
 elif command -v apt &>/dev/null; then
   sudo apt update && sudo apt upgrade -y
   sudo apt autoremove -y
+  sudo apt clean
 elif command -v dnf &>/dev/null; then
   sudo dnf upgrade -y
+  sudo dnf clean all
 elif command -v yum &>/dev/null; then
   sudo yum update -y
+  sudo yum clean all
 elif command -v pacman &>/dev/null; then
   sudo pacman -Syu --noconfirm
+  sudo pacman -Sc --noconfirm
 elif command -v apk &>/dev/null; then
   sudo apk update && sudo apk upgrade
+  apk cache clean 2>/dev/null
 fi
 
 echo ""
@@ -33,7 +40,7 @@ echo "=== python (uv) ==="
 command -v uv &>/dev/null && uv tool upgrade --all
 
 echo ""
-echo "=== node ==="
+echo "=== mise ==="
 command -v mise &>/dev/null && mise upgrade
 
 echo ""

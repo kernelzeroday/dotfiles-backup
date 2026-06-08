@@ -1,0 +1,28 @@
+# Security
+cvedb
+commix
+getsploit
+shodan
+sqlmap
+
+# Media
+yt-dlp
+streamlink
+subliminal
+mangadex-downloader
+epub2tts-kokoro
+kokoro-tts
+yewtube
+
+# AI
+llm
+litellm
+
+# Utilities
+archivebox
+copyparty
+gdown
+cursewords
+xword-dl
+pytorrentsearch
+torrra
