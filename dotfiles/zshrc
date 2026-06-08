@@ -35,8 +35,8 @@ bindkey -M viins '^L' clear-screen
 bindkey -M vicmd '^L' clear-screen
 
 # Mode indicator + cursor shape (replaces show-mode-in-prompt from .inputrc)
-vim_ins_mode="%F{green}i%f"
-vim_cmd_mode="%F{blue}c%f"
+vim_ins_mode="%F{green}(i)%f"
+vim_cmd_mode="%F{blue}(c)%f"
 vim_mode=$vim_ins_mode
 
 zle-keymap-select() {
