@@ -1,0 +1,10 @@
+. "$HOME/.cargo/env"
+
+export PATH="/Users/kod/.local/share/solana/install/active_release/bin:$PATH"
+
+# Added by LM Studio CLI tool (lms)
+export PATH="$PATH:/Users/kod/.cache/lm-studio/bin"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/kod/.local/bin:$PATH"
