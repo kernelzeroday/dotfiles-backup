@@ -37,6 +37,7 @@ echo ""
 echo "linking scripts to ~/bin..."
 mkdir -p "$HOME/bin"
 link scripts/update.sh bin/update.sh
+link scripts/update.osx.sh bin/update.osx.sh
 
 echo ""
 if command -v cargo &>/dev/null; then
