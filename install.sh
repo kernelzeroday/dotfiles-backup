@@ -3,41 +3,43 @@ set -e
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
-link() {
+deploy() {
   src="$DIR/$1"
   dst="$HOME/$2"
-  if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+  if [ -L "$dst" ]; then
+    rm "$dst"
+  elif [ -e "$dst" ]; then
     echo "  backing up $dst -> ${dst}.bak"
     mv "$dst" "${dst}.bak"
   fi
-  ln -sf "$src" "$dst"
-  echo "  $dst -> $src"
+  cp "$src" "$dst"
+  echo "  $src -> $dst"
 }
 
-echo "linking dotfiles..."
-link dotfiles/bashrc       .bashrc
-link dotfiles/bash_profile .bash_profile
-link dotfiles/inputrc      .inputrc
-link dotfiles/zshrc        .zshrc
-link dotfiles/zshenv       .zshenv
-link dotfiles/profile      .profile
-link dotfiles/gitconfig    .gitconfig
-link dotfiles/gpg.conf     .gnupg/gpg.conf
-link dotfiles/vimrc        .vimrc
+echo "installing dotfiles..."
+deploy dotfiles/bashrc       .bashrc
+deploy dotfiles/bash_profile .bash_profile
+deploy dotfiles/inputrc      .inputrc
+deploy dotfiles/zshrc        .zshrc
+deploy dotfiles/zshenv       .zshenv
+deploy dotfiles/profile      .profile
+deploy dotfiles/gitconfig    .gitconfig
+deploy dotfiles/gpg.conf     .gnupg/gpg.conf
+deploy dotfiles/vimrc        .vimrc
 
 mkdir -p "$HOME/ansi_art/sh_out"
-link dotfiles/ansi_art/gengar.sh ansi_art/sh_out/gengar.sh
+deploy dotfiles/ansi_art/gengar.sh ansi_art/sh_out/gengar.sh
 
 echo ""
-echo "linking mise config..."
+echo "installing mise config..."
 mkdir -p "$HOME/.config/mise"
-link dotfiles/config/mise/config.toml .config/mise/config.toml
+deploy dotfiles/config/mise/config.toml .config/mise/config.toml
 
 echo ""
-echo "linking scripts to ~/bin..."
+echo "installing scripts to ~/bin..."
 mkdir -p "$HOME/bin"
-link scripts/update.sh bin/update.sh
-link scripts/update.osx.sh bin/update.osx.sh
+deploy scripts/update.sh bin/update.sh
+deploy scripts/update.osx.sh bin/update.osx.sh
 
 echo ""
 if command -v cargo &>/dev/null; then
