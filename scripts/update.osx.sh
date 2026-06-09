@@ -22,4 +22,7 @@ command -v pdtm &>/dev/null && pdtm -ua
 echo "=== exploit-db ==="
 command -v getsploit &>/dev/null && getsploit -u
 
+echo "=== metasploit ==="
+command -v msfupdate &>/dev/null && msfupdate
+
 echo "=== done ==="

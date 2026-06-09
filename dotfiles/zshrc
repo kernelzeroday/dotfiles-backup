@@ -33,6 +33,7 @@ PATH="$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
 PATH="$HOME/.local/share/solana/install/active_release/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:$PATH"
 [ -d "$HOME/.local/share/mise/shims" ] && PATH="$HOME/.local/share/mise/shims:$PATH"
 PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+[ -d /opt/metasploit-framework/bin ] && PATH="/opt/metasploit-framework/bin:$PATH"
 PATH="$PATH:$HOME/.foundry/bin"
 export PATH
 
