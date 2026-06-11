@@ -63,6 +63,7 @@ alias or='claudeopenrouter'
 
 # --- Integrations ---
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+source ~/.orbstack/shell/init.bash 2>/dev/null || :
 
 # --- Interactive-only below this line ---
 [[ $- != *i* ]] && return
@@ -84,7 +85,7 @@ echo
 # --- Visuals & Personality ---
 export PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 [ -f "$HOME/ansi_art/sh_out/gengar.sh" ] && source "$HOME/ansi_art/sh_out/gengar.sh"
-export DOCKER_HOST=ssh://d.local
+#export DOCKER_HOST=ssh://d.local
 command -v subversivequote &>/dev/null && subversivequote
 
 # --- Secrets (Last to ensure overrides) ---
